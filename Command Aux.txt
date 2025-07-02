@@ -97,3 +97,30 @@ git push origin v1.0.1
 git ls-remote --tags origin
 # ถ้ายังเห็น V1.0.2 หรือ v1.0.2 อยู่
 git push --delete origin V1.0.2     # เปลี่ยนตัวพิมพ์เล็ก/ใหญ่ให้ตรง
+*************************************************************************
+#เกี่ยวกับงาน stash
+git stash list                      # ดูก่อนว่ามีกี่ stash
+git stash drop stash@{0}           # ลบ stash รายการแรก (เปลี่ยนเลขได้)
+git stash clear                    # ล้าง stash ทั้งหมด
+#เอางานจาก stash กลับมา 
+git stash pop                      # ดึง stash ล่าสุดกลับมา + ลบมัน
+git stash pop stash@{0}            # ถ้ามีหลายอัน ข้อควรระวัง: ถ้าไฟล์ที่ stash กลับมา ชนกับไฟล์ปัจจุบัน อาจเกิด conflict ได้ (Git จะเตือนและให้คุณแก้)
+*************************************************************************
+# ย้าย Tag
+# อยู่ที่ Test/ui
+git add .
+git commit -m "Edit Command Aux.txt"
+git push origin Test/ui
+git switch main
+git merge Test/ui
+git push origin main
+
+git tag -f V1.0.3 # ย้าย tag V1.0.3 มาที่ commit ล่าสุด
+#จะระบุย้าย tag ไปยัง commit hash ชัดเจน ใช้2บรรทัดล่างแทนได้:
+git log --oneline               # ดู commit ล่าสุด
+git tag -f V1.0.3 <commit-hash>
+
+git push origin -f V1.0.3 # Push tag ใหม่แบบ force ไป GitHub
+
+git --no-pager show V1.0.3  # เช็กผลลัพธ์
+**************************************************************
