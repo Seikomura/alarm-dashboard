@@ -146,8 +146,8 @@ def unified_handler(load_btn, plot_btn, clear_btn, n_intervals,
         checklist = html.Div([
             html.Div([
                 html.Div([        
-                    html.Button("เลือกตาราง", id={"type": "select-sub", "index": idx}, n_clicks=0),
-                    html.Button("ไม่เลือกตาราง", id={"type": "deselect-sub", "index": idx}, n_clicks=0),
+                    html.Button("เลือกทั้งแถว", id={"type": "select-sub", "index": idx}, n_clicks=0),
+                    html.Button("ไม่เลือกทั้งแถว", id={"type": "deselect-sub", "index": idx}, n_clicks=0),
                 ], style={"display": "flex", "justifyContent": "space-between", "marginBottom": "4px"}),
 
                 dcc.Checklist(
@@ -211,7 +211,7 @@ def unified_handler(load_btn, plot_btn, clear_btn, n_intervals,
 # Select / Deselect all
 # ------------------------------------------------------------------
 @app.callback(
-    Output({"type": "alarm-checklist", "index": dash.ALL}, "value"),
+    Output({"type": "alarm-checklist", "index": dash.ALL}, "value", allow_duplicate=True),
     Input("select-all",    "n_clicks"),
     Input("deselect-all",  "n_clicks"),
     State({"type": "alarm-checklist", "index": dash.ALL}, "options"),
@@ -228,7 +228,7 @@ def toggle_all(sel, desel, options):
 # Check Box each column Select / Deselect all
 # ------------------------------------------------------------------
 @app.callback(
-    Output({"type": "alarm-checklist", "index": MATCH}, "value"),
+    Output({"type": "alarm-checklist", "index": MATCH}, "value", allow_duplicate=True),
     Input({"type": "select-sub",   "index": MATCH}, "n_clicks"),
     Input({"type": "deselect-sub", "index": MATCH}, "n_clicks"),
     State({"type": "alarm-checklist", "index": MATCH}, "options"),
