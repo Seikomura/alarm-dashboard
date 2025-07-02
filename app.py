@@ -1,5 +1,5 @@
 import dash
-from dash import html, dcc, Input, Output, State, ctx
+from dash import html, dcc, Input, Output, State, ctx, MATCH
 import dash.dash_table
 import pandas as pd
 import plotly.express as px
@@ -92,7 +92,9 @@ app.layout = html.Div([
 # Callbacks
 # ------------------------------------------------------------------
 
+# ------------------------------------------------------------------
 # Set today buttons
+# ------------------------------------------------------------------
 @app.callback(Output("start-date", "date"),
               Input("set-start-today", "n_clicks"), prevent_initial_call=True)
 def set_today_start(_):
@@ -142,13 +144,19 @@ def unified_handler(load_btn, plot_btn, clear_btn, n_intervals,
         cols    = [sigs[i:i+per_col] for i in range(0, len(sigs), per_col)]
 
         checklist = html.Div([
-            html.Div(
+            html.Div([
+                html.Div([        
+                    html.Button("เลือกตาราง", id={"type": "select-sub", "index": idx}, n_clicks=0),
+                    html.Button("ไม่เลือกตาราง", id={"type": "deselect-sub", "index": idx}, n_clicks=0),
+                ], style={"display": "flex", "justifyContent": "space-between", "marginBottom": "4px"}),
+
                 dcc.Checklist(
                     id={"type": "alarm-checklist", "index": idx},
                     options=[{"label": s, "value": s} for s in col],
                     value=col,
                     labelStyle={"display": "block"}
-                ),
+                )
+            ],
                 style={"border": "1px solid #ccc", "padding": "8px",
                        "minWidth": "260px", "maxWidth": "420px",
                        "overflowX": "auto", "marginRight": "20px"}
@@ -199,7 +207,9 @@ def unified_handler(load_btn, plot_btn, clear_btn, n_intervals,
     # กรณีอื่น (สำรอง)
     return dash.no_update, dash.no_update, dash.no_update
 
+# ------------------------------------------------------------------
 # Select / Deselect all
+# ------------------------------------------------------------------
 @app.callback(
     Output({"type": "alarm-checklist", "index": dash.ALL}, "value"),
     Input("select-all",    "n_clicks"),
@@ -214,7 +224,26 @@ def toggle_all(sel, desel, options):
         return [[] for _ in options]
     return dash.no_update
 
+# ------------------------------------------------------------------
+# Check Box each column Select / Deselect all
+# ------------------------------------------------------------------
+@app.callback(
+    Output({"type": "alarm-checklist", "index": MATCH}, "value"),
+    Input({"type": "select-sub",   "index": MATCH}, "n_clicks"),
+    Input({"type": "deselect-sub", "index": MATCH}, "n_clicks"),
+    State({"type": "alarm-checklist", "index": MATCH}, "options"),
+    prevent_initial_call=True
+)
+def toggle_sub_checklist(sel, desel, options):
+    if ctx.triggered_id["type"] == "select-sub":
+        return [o["value"] for o in options]
+    elif ctx.triggered_id["type"] == "deselect-sub":
+        return []
+    return dash.no_update
+
+# ------------------------------------------------------------------
 # Export to Excel
+# ------------------------------------------------------------------
 @app.callback(
     Output("download-excel", "data"),
     Input("export-button", "n_clicks"),
