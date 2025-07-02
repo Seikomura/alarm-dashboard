@@ -109,7 +109,7 @@ git stash pop stash@{0}            # ถ้ามีหลายอัน ข้
 # ก่อนย้าย Tag
 # อยู่ที่ Test/ui
 git add .
-git commit -m "Edit Command Aux.txt"
+git commit -m "Edit Command Aux.txt V1"
 git push origin Test/ui
 git switch main
 git merge Test/ui
