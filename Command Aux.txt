@@ -115,11 +115,7 @@ git switch main
 git merge Test/ui
 git push origin main
 # เริ่มย้าย Tag
-git tag -a -f V1.0.3 -m "Stable version Basic V1.0.3" # ย้าย tag V1.0.3 มาที่ commit ล่าสุด
-#จะระบุย้าย tag ไปยัง commit hash ชัดเจน ใช้2บรรทัดล่างแทนได้:
-git log --oneline               # ดู commit ล่าสุด
-git tag -f v1.0.3 <commit-hash>
-
+git tag -a -f v1.0.3 -m "Stable version Basic v1.0.3" # ย้าย tag v1.0.3 มาที่ commit ล่าสุด
  
 git --no-pager show v1.0.3  # เช็กผลลัพธ์
 **************************************************************
