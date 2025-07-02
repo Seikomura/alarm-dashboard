@@ -8,7 +8,7 @@ import io
 from data_utils import load_data
 
 app = dash.Dash(__name__)
-app.title = "Machine Alarm Summary V 0.01"
+app.title = "Machine Alarm Summary V 1.0.1"
 
 # ------------------------------------------------------------------
 # Helper: 15-minute dropdown
