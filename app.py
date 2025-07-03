@@ -82,7 +82,7 @@ app.layout = html.Div([
     # ----- Auto-refresh timer -----
     dcc.Interval(
     id="interval-refresh",
-    interval=5 * 60 * 1000,  # ทุก 5 นาที (หน่วยเป็นมิลลิวินาที)
+    interval=30 * 60 * 1000,  # ทุก 5 นาที (หน่วยเป็นมิลลิวินาที)
     n_intervals=0
 ),
 
