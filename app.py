@@ -263,13 +263,6 @@ def export_to_excel(_, sd, st, ed, et, selected_lists):
     # ---------- ✨ จัดคอลัมน์ให้อยู่ในรูป export-friendly ----------
     df = df[["L1Name", "signalname", "value", "updatedate"]].copy()
 
-    # แปลง updatedate (UTC) → string local-time เพื่อให้ XlsxWriter เขียนได้
-    # ก่อน (ทำให้ error)
-# df["updatedate"] = (df["updatedate"]
-#                     .dt.tz_convert("Asia/Bangkok")
-#                     .dt.strftime("%Y-%m-%d %H:%M:%S"))
-
-# หลัง (ปลอดภัยกับทั้ง tz-naive และ tz-aware)
     df["updatedate"] = (pd.to_datetime(df["updatedate"], utc=True)          # ① บังคับให้เป็น UTC-aware
                     .dt.tz_convert("Asia/Bangkok")                          # ② แปลงเป็นเวลาไทย
                     .dt.strftime("%Y-%m-%d %H:%M:%S"))                      # ③ แปลงเป็นสตริง
